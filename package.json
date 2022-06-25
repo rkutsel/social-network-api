@@ -1,0 +1,19 @@
+{
+  "name": "social-network-api",
+  "version": "0.0.1",
+  "description": "Social Network API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rkutsel/social-network-api.git"
+  },
+  "author": "Roman Kutsel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rkutsel/social-network-api/issues"
+  },
+  "homepage": "https://github.com/rkutsel/social-network-api#readme"
+}
