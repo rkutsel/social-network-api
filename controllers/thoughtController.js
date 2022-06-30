@@ -41,18 +41,18 @@ module.exports = {
 			returnOriginal: false,
 		})
 			.select("-_id -__v")
-			.then((dbThoughtData) => {
-				res.json(dbThoughtData);
-				console.log(dbThoughtData);
+			.then((thoughtData) => {
+				res.json(thoughtData);
+				console.log(thoughtData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},
 	deleteThought(req, res) {
 		Thought.findByIdAndDelete({ _id: req.params.thoughtId })
 			.select("-_id -__v")
-			.then((dbThoughtData) => {
-				res.json(dbThoughtData);
-				console.log(dbThoughtData);
+			.then((thoughtData) => {
+				res.json(thoughtData);
+				console.log(thoughtData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},
@@ -62,9 +62,9 @@ module.exports = {
 			{ $push: { reactions: req.body } }
 		)
 			.select("-_id -__v")
-			.then((dbThoughtData) => {
-				res.json(dbThoughtData);
-				console.log(dbThoughtData);
+			.then((thoughtData) => {
+				res.json(thoughtData);
+				console.log(thoughtData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},
@@ -74,9 +74,9 @@ module.exports = {
 			{ $pull: { reactions: { _id: req.body } } }
 		)
 			.select("-_id -__v")
-			.then((dbThoughtData) => {
-				res.json(dbThoughtData);
-				console.log(dbThoughtData);
+			.then((thoughtData) => {
+				res.json(thoughtData);
+				console.log(thoughtData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},

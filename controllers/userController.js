@@ -23,9 +23,9 @@ module.exports = {
 	},
 	createUser(req, res) {
 		User.create(req.body)
-			.then((dbUserData) => {
-				res.json(dbUserData);
-				console.log(dbUserData);
+			.then((userData) => {
+				res.json(userData);
+				console.log(userData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},
@@ -35,9 +35,9 @@ module.exports = {
 		})
 			.select("-_id -__v -thoughts")
 			.populate("friends")
-			.then((dbUserData) => {
-				res.json(dbUserData);
-				console.log(dbUserData);
+			.then((userData) => {
+				res.json(userData);
+				console.log(userData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},
@@ -45,13 +45,11 @@ module.exports = {
 		User.findByIdAndDelete({ _id: req.params.userId })
 			.select("-_id -__v")
 			.populate("friends")
-			.then((dbUserData) => {
-				Thought.deleteMany({ username: dbUserData.username }).then(
-					(err) => err
-				);
-				console.log(dbUserData.username);
-				res.json(dbUserData);
-				console.log(dbUserData);
+			.then((userData) => {
+				Thought.deleteMany({ username: userData.username }).then((err) => err);
+				console.log(userData.username);
+				res.json(userData);
+				console.log(userData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},
@@ -60,9 +58,9 @@ module.exports = {
 			{ _id: req.params.userId },
 			{ $push: { friends: req.params.friendId } }
 		)
-			.then((dbUserData) => {
-				res.json(dbUserData);
-				console.log(dbUserData);
+			.then((userData) => {
+				res.json(userData);
+				console.log(userData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},
@@ -71,9 +69,9 @@ module.exports = {
 			{ _id: req.params.userId },
 			{ $pull: { friends: req.params.friendId } }
 		)
-			.then((dbUserData) => {
-				res.json(dbUserData);
-				console.log(dbUserData);
+			.then((userData) => {
+				res.json(userData);
+				console.log(userData);
 			})
 			.catch((err) => res.status(500).json(err));
 	},
