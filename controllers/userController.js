@@ -1,26 +1,30 @@
 const User = require("../models/User");
 const Thought = require("../models/Thought");
+const { serverError } = require("../utils/errors");
 
 module.exports = {
 	getUsers(req, res) {
 		User.find()
 			.select("-__v")
-			.populate("friends")
-			.populate("thoughts")
+			.populate({ path: "friends", select: "-__v -thoughts" })
+			.populate({ path: "thoughts", select: "-__v" })
 			.then((users) => res.json(users))
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	getSingleUser(req, res) {
-		User.findOne({ _id: req.params.userId })
+		const userId = req.params.userId;
+		User.findOne({ _id: userId })
 			.select("-__v")
-			.populate("friends")
-			.populate("thoughts")
+			.populate({ path: "friends", select: "-__v -thoughts" })
+			.populate({ path: "thoughts", select: "-__v" })
 			.then((user) =>
 				!user
-					? res.status(404).json({ message: "User Not Found" })
+					? res.status(404).json({
+							"Error Message": `User With Requested ID: ${userId} Not Found`,
+					  })
 					: res.json(user)
 			)
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	createUser(req, res) {
 		User.create(req.body)
@@ -28,7 +32,7 @@ module.exports = {
 				res.json(userData);
 				console.log(userData);
 			})
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	updateUser(req, res) {
 		User.findOneAndUpdate({ _id: req.params.userId }, req.body, {
@@ -40,7 +44,7 @@ module.exports = {
 				res.json(userData);
 				console.log(userData);
 			})
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	deleteUser(req, res) {
 		User.findByIdAndDelete({ _id: req.params.userId })
