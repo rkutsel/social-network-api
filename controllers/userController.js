@@ -38,8 +38,9 @@ module.exports = {
 		User.findOneAndUpdate({ _id: req.params.userId }, req.body, {
 			returnOriginal: false,
 		})
-			.select("-_id -__v -thoughts")
+			.select("-__v")
 			.populate("friends")
+			.populate("thoughts")
 			.then((userData) => {
 				res.json(userData);
 				console.log(userData);
@@ -49,14 +50,16 @@ module.exports = {
 	deleteUser(req, res) {
 		User.findByIdAndDelete({ _id: req.params.userId })
 			.select("-_id -__v")
-			.populate("friends")
+			.populate({ path: "friends", select: "-__v -thoughts" })
 			.then((userData) => {
-				Thought.deleteMany({ username: userData.username }).then((err) => err);
+				Thought.deleteMany({ username: userData.username }).then(
+					(thoughtData) => thoughtData
+				);
 				console.log(userData.username);
 				res.json(userData);
 				console.log(userData);
 			})
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	addFriend(req, res) {
 		User.updateOne(
@@ -67,7 +70,7 @@ module.exports = {
 				res.json(userData);
 				console.log(userData);
 			})
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	deleteFriend(req, res) {
 		User.updateOne(
@@ -78,6 +81,6 @@ module.exports = {
 				res.json(userData);
 				console.log(userData);
 			})
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 };

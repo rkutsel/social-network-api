@@ -1,22 +1,26 @@
 const Thought = require("../models/Thought");
 const User = require("../models/User");
+const { serverError } = require("../utils/errors");
 
 module.exports = {
 	getThoughts(req, res) {
 		Thought.find()
 			.select("-__v")
 			.then((thoughts) => res.json(thoughts))
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	getSingleThought(req, res) {
-		Thought.findOne({ _id: req.params.thoughtId })
+		const thoughtId = req.params.thoughtId;
+		Thought.findOne({ _id: thoughtId })
 			.select("-__v")
 			.then((thought) =>
 				!thought
-					? res.status(404).json({ message: "Thought Not Found" })
+					? res.status(404).json({
+							"Error Message": `Requested Thought ID: ${thoughtId} Not Found`,
+					  })
 					: res.json(thought)
 			)
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	createThought(req, res) {
 		User.findOne({ username: req.body.username })
@@ -34,7 +38,7 @@ module.exports = {
 					res.status(404).send(`Username ${req.body.username} Not Found`);
 				}
 			})
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	updateThought(req, res) {
 		Thought.findOneAndUpdate({ _id: req.params.thoughtId }, req.body, {
@@ -45,7 +49,7 @@ module.exports = {
 				res.json(thoughtData);
 				console.log(thoughtData);
 			})
-			.catch((err) => res.status(500).json(err));
+			.catch(() => res.status(500).json(serverError()));
 	},
 	deleteThought(req, res) {
 		Thought.findByIdAndDelete({ _id: req.params.thoughtId })
