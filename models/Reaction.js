@@ -12,6 +12,7 @@ const reactionSchema = new Schema(
 			type: Date,
 			default: Date.now,
 		},
+		__v: { type: Number, select: false },
 	},
 	{ versionKey: false }
 );

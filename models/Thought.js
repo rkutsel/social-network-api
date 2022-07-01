@@ -16,6 +16,7 @@ const thoughtSchema = new Schema(
 		},
 		username: { type: String, required: true },
 		reactions: [reactionSchema],
+		__v: { type: Number, select: false },
 	},
 	{
 		// Mongoose supports two Schema options to transform Objects after querying MongoDb: toJSON and toObject.
