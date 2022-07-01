@@ -144,3 +144,10 @@ To start the API server, form the `root` directory run `node index` or `npm star
 - `POST` to create a reaction stored in a single thought's `reactions` array field
 
 - `DELETE` to pull and remove a reaction by the reaction's `reactionId` value
+
+## Screenshots
+
+![user-add](./assets/img/user-add.png)
+![users-all](./assets/img/users-all.png)
+![thoughts-all](./assets/img/thoughts-all.png)
+![thought-add](./assets/img/thought-add.png)
