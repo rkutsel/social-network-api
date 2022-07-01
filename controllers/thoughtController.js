@@ -26,14 +26,16 @@ module.exports = {
 		User.findOne({ username: req.body.username })
 			.then((userId) => {
 				if (userId) {
-					Thought.create(req.body).then((dbThoughtData) => {
-						User.updateOne(
-							{ _id: userId._id.toString() },
-							{ $push: { thoughts: dbThoughtData._id } }
-						).then((err) => err);
-						res.json(dbThoughtData);
-						console.log(dbThoughtData);
-					});
+					Thought.create(req.body)
+						.then((dbThoughtData) => {
+							User.updateOne(
+								{ _id: userId._id.toString() },
+								{ $push: { thoughts: dbThoughtData._id } }
+							).then((err) => err);
+							res.json(dbThoughtData);
+							console.log(dbThoughtData);
+						})
+						.catch(() => res.status(500).json(serverError()));
 				} else {
 					res.status(404).send(`Username ${req.body.username} Not Found`);
 				}
