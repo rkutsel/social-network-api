@@ -31,7 +31,7 @@ module.exports = {
 							User.updateOne(
 								{ _id: userId._id.toString() },
 								{ $push: { thoughts: dbThoughtData._id } }
-							).then((err) => err);
+							).then((ThoughtData) => ThoughtData);
 							res.json(dbThoughtData);
 							console.log(dbThoughtData);
 						})
