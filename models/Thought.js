@@ -14,6 +14,7 @@ const thoughtSchema = new Schema(
 			type: Date,
 			default: Date.now,
 		},
+		updatedAt: { type: Date },
 		username: { type: String, required: true },
 		reactions: [reactionSchema],
 		__v: { type: Number, select: false },
@@ -35,6 +36,10 @@ thoughtSchema.virtual("reactionCount").get(function () {
 
 thoughtSchema.virtual("postedOn").get(function () {
 	return this.createdAt.toDateString();
+});
+
+thoughtSchema.pre("findOneAndUpdate", function () {
+	this.set({ updatedAt: new Date() });
 });
 
 const Thought = model("thought", thoughtSchema);
